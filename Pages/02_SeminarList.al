@@ -1,4 +1,4 @@
-page 123456702 CSD Seminar List
+page 123456702 "CSD Seminar List"
 {
     PageType = List;
     SourceTable = "CSD Seminar";
