@@ -1,0 +1,26 @@
+{
+  "id": "4cf35d58-e598-4bde-aa8d-7ceb3e57b7c7",
+  "name": "SD Seminar",
+  "publisher": "LarsV",
+  "brief": "Brief entred by LV",
+  "description": "",
+  "version": "1.0.0.0",
+  "compatibilityId": "1.0.0.0",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "capabilities": [],
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "11.0.0.0",
+  "application": "11.0.0.0",
+  "showMyCode": true,
+  "features": "TranslationFile",
+  "target": "Internal",
+  "idRange": {
+    "from": 123456700,
+    "to": 123456799
+  }
+}
