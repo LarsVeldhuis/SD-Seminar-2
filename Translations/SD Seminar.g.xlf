@@ -4,12 +4,17 @@
     <body>
       <group id="body">
         <trans-unit id="Page 4035078560 - Property 2879900210" maxWidth="999" size-unit="char" translate="yes" xml:space="preserve">
-          <source>SD Seminar Setup</source>
+          <source>Seminar Setup</source>
           <note from="Developer" annotates="general" priority="2" />
           <note from="Xliff Generator" annotates="general" priority="3">Page - Page</note>
         </trans-unit>
         <trans-unit id="Page 1944624769 - Property 2879900210" maxWidth="999" size-unit="char" translate="yes" xml:space="preserve">
           <source>Seminar</source>
+          <note from="Developer" annotates="general" priority="2" />
+          <note from="Xliff Generator" annotates="general" priority="3">Page - Page</note>
+        </trans-unit>
+        <trans-unit id="Page 729898515 - Property 2879900210" maxWidth="999" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Semnar List</source>
           <note from="Developer" annotates="general" priority="2" />
           <note from="Xliff Generator" annotates="general" priority="3">Page - Page</note>
         </trans-unit>
