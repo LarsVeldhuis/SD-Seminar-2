@@ -1,4 +1,6 @@
 table 123456701 "CSD Seminar"
+// CSD1.00 - 2018-01-01 - D. E. Veloper
+// Chapter 5 - Lab 3-2 & Lab 3-3 
 {
     Caption = 'Seminar';
 
@@ -7,28 +9,30 @@ table 123456701 "CSD Seminar"
         field(10; "No."; Code[20])
         {
             Caption = 'No.';
+
             trigger OnValidate();
             begin
-                if "No." <> xRec."No." then begin
-                    SeminarSetup.GET;
-                    NoSeriesMgt.TestManual(SeminarSetup."Seminar Nos.");
+                if "No." <> xRec."No." then begin 
+                    SeminarSetup.GET; 
+                    NoSeriesMgt.TestManual(SeminarSetup."Seminar Nos."); 
                     "No. Series" := '';
                 end;
             end;
         }
-        field(20; "Name"; Code[20])
+        field(20; Name; Text[50])
         {
             Caption = 'Name';
+
             trigger OnValidate();
             begin
                 if("Search Name" = UpperCase(xRec.Name)) or("Search Name" = '') then
                     "Search Name" := Name;
-            end;
+            end;        
         }
         field(30; "Seminar Duration"; Decimal)
         {
             Caption = 'Seminar Duration';
-            DecimalPlaces = 0 : 1;
+            DecimalPlaces=0:1;
         }
         field(40; "Minimum Participants"; Integer)
         {
@@ -38,11 +42,11 @@ table 123456701 "CSD Seminar"
         {
             Caption = 'Maximum Participants';
         }
-        field(60; "Search Name"; Code[60])
+        field(60; "Search Name"; Code[50])
         {
             Caption = 'Search Name';
         }
-        field(70; "Blocked"; Boolean)
+        field(70; Blocked; Boolean)
         {
             Caption = 'Blocked';
         }
@@ -51,30 +55,22 @@ table 123456701 "CSD Seminar"
             Caption = 'Last Date Modified';
             Editable = false;
         }
-        field(90; "Comment"; Boolean)
+        field(90; Comment; Boolean)
         {
             Caption = 'Comment';
-            FieldClass = FlowField;
             Editable = false;
-            //FieldClass=FlowField;
-            //CalcFormula=exist("Seminar Comment Line"
-            //where("Table Name"= const("Seminar"),
-            // "No."=Field("No.")));
+            FieldClass = FlowField;
+            CalcFormula = exist("CSD Seminar Comment Line" where("Table Name"=filter("Seminar"),"No."=Field("No.")));
         }
         field(100; "Seminar Price"; Decimal)
         {
             Caption = 'Seminar Price';
-            AutoFormatType = 1;
         }
-        field(110; "Gen. Prod. Posting Group"; Code[10])
+        field(110; "Gen. Prod. Posting Group"; code[10])
         {
             Caption = 'Gen. Prod. Posting Group';
             TableRelation = "Gen. Product Posting Group";
-        }
-        field(120; "VAT Prod. Posting Group"; Code[10])
-        {
-            Caption = 'VAT Prod. Posting Group';
-            TableRelation = "VAT Product Posting Group";
+
             trigger OnValidate();
             begin
                 if(xRec."Gen. Prod. Posting Group" <> "Gen. Prod. Posting Group") then begin
@@ -83,14 +79,19 @@ table 123456701 "CSD Seminar"
                 end;
             end;
         }
+        field(120; "VAT Prod. Posting Group"; code[10])
+        {
+            Caption = 'VAT Prod. Posting Group';
+            TableRelation = "VAT Product Posting Group";
+        }
         field(130; "No. Series"; Code[10])
         {
+            Editable = false;
             Caption = 'No. Series';
             TableRelation = "No. Series";
-            Editable = false;
         }
-    }
 
+    }
 
     keys
     {
@@ -98,22 +99,19 @@ table 123456701 "CSD Seminar"
         {
             Clustered = true;
         }
-        key(key1; "Search Name")
-        {
-        }
-
     }
+
     var
         SeminarSetup: Record "CSD Seminar Setup";
-        //CommentLine : record "CSD Seminar Comment Line";
+        CommentLine: Record "CSD Seminar Comment Line";
         Seminar: Record "CSD Seminar";
-        GenProdPostinggroup: Record "Gen. Product Posting Group";
+        GenProdPostingGroup: Record "Gen. Product Posting Group";
         NoSeriesMgt: Codeunit NoSeriesManagement;
 
     trigger OnInsert();
     begin
         if "No." = '' then begin
-            SeminarSetup.Get;
+            SeminarSetup.get;
             SeminarSetup.TestField("Seminar Nos.");
             NoSeriesMgt.InitSeries(SeminarSetup."Seminar Nos.", xRec."No. Series", 0D, "No.", "No. Series");
         end;
@@ -124,19 +122,17 @@ table 123456701 "CSD Seminar"
         "Last Date Modified" := Today;
     end;
 
+    trigger OnDelete();
+    begin
+        CommentLine.Reset;
+        CommentLine.SetRange("Table Name", CommentLine."Table Name"::Seminar); 
+        CommentLine.SetRange("No.", "No.");
+        CommentLine.DeleteAll; 
+    end;
+
     trigger OnRename();
     begin
         "Last Date Modified" := Today;
-
-    end;
-
-    trigger OnDelete();
-    begin
-        //CommentLine.Reset;
-        //CommentLine.SetRange("Table Name",
-        //CommentLine."Table Name"::Seminar);
-        //CommentLine.SetRange("No.","No.");
-        // CommentLine.DeleteAll;
     end;
 
     procedure AssistEdit(): Boolean;
@@ -146,8 +142,7 @@ table 123456701 "CSD Seminar"
             Seminar := Rec;
             SeminarSetup.get;
             SeminarSetup.TestField("Seminar Nos.");
-            if NoSeriesMgt.SelectSeries(SeminarSetup."Seminar Nos."
-            , xRec."No. Series", "No. Series") then begin
+            if NoSeriesMgt.SelectSeries(SeminarSetup."Seminar Nos.", xRec."No. Series", "No. Series") then begin
                 NoSeriesMgt.SetSeries("No.");
                 Rec := Seminar;
                 exit(true);
