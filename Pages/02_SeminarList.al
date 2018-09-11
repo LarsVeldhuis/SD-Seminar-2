@@ -1,5 +1,6 @@
 page 123456702 "CSD Seminar List"
 {
+    Caption = 'Semnar List';
     PageType = List;
     SourceTable = "CSD Seminar";
     Editable = false;
